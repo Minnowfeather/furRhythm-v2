@@ -1,0 +1,55 @@
+package furRhythm_recoded;
+import java.util.Map;
+import java.util.HashMap;
+
+public class FurInputHandler {
+	private int size;
+	private Map<Character, Boolean> keys;
+	private final Character[] DEFAULT_VALUES = {'d','f','j','k',' ', 's', 'l'};
+	
+	public FurInputHandler() {
+		this(4);
+	}
+	public FurInputHandler(int size) {
+		this.size = size;
+		generateDict();
+		
+	}
+	private void generateDict() {
+		keys = new HashMap<>();
+		for(int i = 0; i < size; i++) {
+			keys.put(DEFAULT_VALUES[i], false);
+		}
+	}
+	public void press(char k) {
+		if(keys.containsKey(k) && !keys.get(k)) {
+			keys.put(k, true);
+		}
+	}
+	
+	public void release(char k) {
+		if(keys.containsKey(k) && keys.get(k)) {
+			keys.put(k, false);
+		}
+	}
+	
+	public boolean getValue(char k) {
+		return keys.containsKey(k) ? keys.get(k) : false;
+	}
+	
+	public int getSize() {
+		return this.size;
+	}
+	public void setSize(int size) {
+		this.size = size;
+	}
+	
+	public char[] getKeys() {
+		char[] tempKeys = new char[size];
+		for(int i = 0; i < size; i++) {
+			tempKeys[i] = DEFAULT_VALUES[i];
+		}
+		return tempKeys;
+	}
+	
+}
