@@ -19,6 +19,14 @@ public class TapNote extends Note{
 		startTime = endTime - (super.SPEED*super.SCONST);
 		rect = new Rectangle2D.Double(this.x, this.y, WIDTH, HEIGHT);
 	}
+	public TapNote(int l, double time) {
+		this.x = l*WIDTH;
+		this.y = -10;
+		LANE = laneIntToChar(l);
+		endTime = time;
+		startTime = endTime - (super.SPEED*super.SCONST);
+		rect = new Rectangle2D.Double(this.x, this.y, WIDTH, HEIGHT);
+	}
 	public TapNote(double x, double y, char l, double time) {
 		this.x = x;
 		this.y = y;

@@ -7,7 +7,7 @@ public class NoteCatcherController {
 	NoteCatcher[] catchers;
 	final Rectangle2D.Double BINDING_BOX;
 	public NoteCatcherController(FurInputHandler inputhandler) {
-		BINDING_BOX = new Rectangle2D.Double(0, 750, 1000, 50);
+		BINDING_BOX = new Rectangle2D.Double(0, 725, 1000, 25);
 		this.inputhandler = inputhandler;
 		catchers = new NoteCatcher[inputhandler.getSize()];
 		createCatchers();
@@ -17,7 +17,7 @@ public class NoteCatcherController {
 		
 		for(int i = 0; i < tempChars.length; i++) {
 			catchers[i] = new NoteCatcher(
-					new Rectangle2D.Double(0 + i*(1000.0/catchers.length), 750, (double)(1000.0/catchers.length), 50)
+					new Rectangle2D.Double(0 + i*(1000.0/catchers.length), 725, (double)(1000.0/catchers.length), 25)
 					, tempChars[i]);
 		}
 	}
