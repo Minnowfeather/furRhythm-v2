@@ -68,6 +68,9 @@ public class TapNote extends Note{
 	public char getLane() {
 		return LANE;
 	}
+	public int getLaneInt() {
+		return laneCharToInt(getLane());
+	}
 	public Rectangle2D getRect() {
 		return rect;
 	}
@@ -91,15 +94,12 @@ public class TapNote extends Note{
 	public int computeInput(double currentTiming) {
 		double distance = Math.abs(endTime - currentTiming);
 		if(distance < 50) {
-			destroy();
 			return 3;
 		}
 		if(distance < 100) {
-			destroy();
 			return 2;
 		}
 		if(distance < 120) {
-			destroy();
 			return 1;
 		}
 		return 0;
@@ -147,5 +147,6 @@ public class TapNote extends Note{
 	public void destroy() {
 		moveTo(-100,-100);
 		rect = null;
+		MOVING = false;
 	}
 }

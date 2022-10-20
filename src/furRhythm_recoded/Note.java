@@ -22,6 +22,7 @@ public abstract class Note {
 	abstract double getCenterX();
 	abstract double getCenterY();
 	abstract char getLane();
+	abstract int getLaneInt();
 	abstract Rectangle2D getRect();
 	abstract boolean getMoving();
 	abstract double getStartTime();

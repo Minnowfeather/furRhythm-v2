@@ -5,6 +5,7 @@ import java.util.HashMap;
 public class FurInputHandler {
 	private int size;
 	private Map<Character, Boolean> keys;
+	private Map<Character, Boolean> lockList;
 	private final Character[] DEFAULT_VALUES = {'d','f','j','k',' ', 's', 'l'};
 	
 	public FurInputHandler() {
@@ -17,13 +18,21 @@ public class FurInputHandler {
 	}
 	private void generateDict() {
 		keys = new HashMap<>();
+		lockList = new HashMap<>();
 		for(int i = 0; i < size; i++) {
 			keys.put(DEFAULT_VALUES[i], false);
+			lockList.put(DEFAULT_VALUES[i], false);
 		}
 	}
 	public void press(char k) {
 		if(keys.containsKey(k) && !keys.get(k)) {
 			keys.put(k, true);
+		}
+	}
+	
+	public void lock(char k) {
+		if(keys.containsKey(k) && !lockList.get(k)) {
+			lockList.put(k, true);
 		}
 	}
 	
@@ -33,8 +42,18 @@ public class FurInputHandler {
 		}
 	}
 	
+	public void unlock(char k) {
+		if(keys.containsKey(k) && lockList.get(k)) {
+			lockList.put(k, false);
+		}
+	}
+	
 	public boolean getValue(char k) {
 		return keys.containsKey(k) ? keys.get(k) : false;
+	}
+	
+	public boolean getLock(char k) {
+		return lockList.containsKey(k) ? lockList.get(k) : false;
 	}
 	
 	public int getSize() {
@@ -42,6 +61,7 @@ public class FurInputHandler {
 	}
 	public void setSize(int size) {
 		this.size = size;
+		generateDict();
 	}
 	
 	public char[] getKeys() {

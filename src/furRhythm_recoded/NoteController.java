@@ -70,15 +70,25 @@ public class NoteController {
 				n.setMoving(true);
 			}
 			n.autoMove(dt);
-			if(iH.getValue(n.getLane())) {
+			if(iH.getValue(n.getLane()) && !iH.getLock(n.getLane())) {
 				boolean removeN = computeInput(n, time);
 				if(removeN) {
 					removeList.add(n);
 				}
+				iH.lock(n.getLane());
 			}
+			
 		}
 		while(!removeList.isEmpty()) {
-			noteList.remove(removeList.remove(0));
+			Note n = removeList.remove(0);
+			noteList.remove(n);
+			n.destroy();
+			n = null;			
+		}
+		for(char c: iH.getKeys()) {
+			if(!iH.getValue(c) && iH.getLock(c)) {
+				iH.unlock(c);
+			}
 		}
 		
 		//System.out.println();
