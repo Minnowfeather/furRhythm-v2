@@ -3,11 +3,14 @@ package furRhythm_recoded;
 import java.awt.geom.Rectangle2D;
 
 public class NoteCatcherController {
-	FurInputHandler inputhandler;
-	NoteCatcher[] catchers;
+	private FurInputHandler inputhandler;
+	private NoteCatcher[] catchers;
+	public int WINDOW_WIDTH = 1000;
+	public int WINDOW_HEIGHT = 1000;
 	final Rectangle2D.Double BINDING_BOX;
+	
 	public NoteCatcherController(FurInputHandler inputhandler) {
-		BINDING_BOX = new Rectangle2D.Double(0, 725, 1000, 25);
+		BINDING_BOX = new Rectangle2D.Double(0, 600, 1000, 10);
 		this.inputhandler = inputhandler;
 		catchers = new NoteCatcher[inputhandler.getSize()];
 		createCatchers();
@@ -17,7 +20,11 @@ public class NoteCatcherController {
 		
 		for(int i = 0; i < tempChars.length; i++) {
 			catchers[i] = new NoteCatcher(
-					new Rectangle2D.Double(0 + i*(1000.0/catchers.length), 725, (double)(1000.0/catchers.length), 25)
+					new Rectangle2D.Double(
+							i*((double)WINDOW_WIDTH/(double)catchers.length),
+							BINDING_BOX.getMinY() - BINDING_BOX.getHeight()/2,
+							((double)WINDOW_WIDTH/(double)catchers.length),
+							25)
 					, tempChars[i]);
 		}
 	}
@@ -74,5 +81,12 @@ public class NoteCatcherController {
 	}
 	public Rectangle2D.Double getBindingBox(){
 		return BINDING_BOX;
+	}
+	
+	public void setWindowSize(int width, int height) {
+		WINDOW_WIDTH = width;
+		WINDOW_HEIGHT = height;
+		BINDING_BOX.setRect(0, 3*height/4, width, 10);
+		createCatchers();
 	}
 }

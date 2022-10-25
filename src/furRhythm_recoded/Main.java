@@ -2,20 +2,17 @@ package furRhythm_recoded;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.font.*;
-import java.awt.GraphicsEnvironment;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicComboBoxUI.KeyHandler;
-
-import java.util.ArrayList;
-
 import java.awt.event.*;
 
-import java.util.Scanner;
 import java.io.File;
+
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 
 public class Main extends JPanel{
 
@@ -29,6 +26,7 @@ public class Main extends JPanel{
 		
 		k = new FurInputHandler(4);
 		scorecounter = new ScoreCounter();
+		catcher = new NoteCatcherController(k);
 		
 		scoreFont = new Font("Arial", Font.PLAIN, 50);
 		comboFont = new Font("Arial", Font.PLAIN, 64);
@@ -50,12 +48,21 @@ public class Main extends JPanel{
 		j.add(new Main());
 		j.setVisible(true);
 		
-		catcher = new NoteCatcherController(k);
+		
+		catcher.setWindowSize(j.getWidth(), j.getHeight());
 		
 		noteList = new NoteController(k, 4);
 		noteList.setTarget(catcher.getBindingBox());
 		noteList.attachScoreCounter(scorecounter);
-		
+		noteList.setWindowSize(j.getWidth(), j.getHeight());
+		OsuParser.parse("Kurokotei - Wtf/Kurokotei - wtf (FAMoss) [insane].osu", noteList);
+		JFXPanel fxPanel = new JFXPanel();
+		j.add(fxPanel);
+		Media media = new Media(new File("Kurokotei - Wtf/wtf.mp3").toURI().toString());
+		MediaPlayer mediaPlayer = new MediaPlayer(media);
+		mediaPlayer.setVolume(0.02);
+		//System.out.println(noteList);
+		/*
 		Scanner s = null;
 		try{
 			s = new Scanner(new File("myMap.txt"));
@@ -66,14 +73,19 @@ public class Main extends JPanel{
 			String[] lineData = s.nextLine().split(",");
 			noteList.createTapNote(lineData[0].charAt(0), Double.parseDouble(lineData[1]));
 		}
-		
+		*/
+		noteList.sort();
+		//System.out.println(noteList);
 		double startOffset = Math.min(noteList.getEarliest(), 0) - 5000;
 		double timeElapsed = 0 + startOffset;
 		double startTime = System.currentTimeMillis();
 		long timeStamp_before = System.nanoTime();
 		long timeStamp_after = timeStamp_before;
 		double dT = 0;
-		while(timeElapsed < 10000) {
+		while(timeElapsed < noteList.getLatest() + 1000) {
+			if(timeElapsed == 0) {
+				mediaPlayer.play();
+			}
 			// time upkeep
 			timeStamp_before = System.nanoTime();
 			dT += timeStamp_before - timeStamp_after;
@@ -81,7 +93,7 @@ public class Main extends JPanel{
 			// main update loop
 			catcher.update();
 			noteList.update(timeElapsed, dT);
-			System.out.println(timeElapsed);
+			//System.out.println(timeElapsed);
 			
 			// re-draw all
 			j.repaint();
@@ -102,13 +114,23 @@ public class Main extends JPanel{
 		
 		g2.setColor(new Color(0,0,0));
 		
-		// outline deactivated noteCatchers
+		/* outline deactivated noteCatchers
 		for(Rectangle2D.Double i:catcher.getDraw()) {
 			g2.draw(i);
 		}
+		*/
+		g2.draw(catcher.getBindingBox());
 		// draw notes
-		for(Note i:noteList.getList()) {
-			g2.draw(i.getRect());
+		g2.setColor(new Color(0,255,0));
+		for(Note i:noteList.getVisibleNotes()) {
+			if(i == null)
+				continue;
+			try {
+				g2.fill(i.getRect());
+			} catch(NullPointerException e) {
+				System.out.println("Bad!");
+			}
+			
 		}
 		// fill the activated catchers
 		g2.setColor(new Color(255,0,0));
