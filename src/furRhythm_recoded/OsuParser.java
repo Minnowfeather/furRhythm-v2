@@ -30,4 +30,25 @@ public class OsuParser {
 		
 		// https://osu.ppy.sh/wiki/en/Client/File_formats/Osu_%28file_format%29#holds-(osu!mania-only)
 	}
+	
+	static String getPathToAudio(String folder, String map) {
+		Scanner s = null;
+		try {
+			s = new Scanner(new File(folder + map), "UTF-8");
+		} catch(FileNotFoundException e) {
+			System.out.println("File not found.");
+		}
+		String r = s.nextLine().toLowerCase();
+		while(s.hasNextLine() && !r.equals("[general]")) {
+			r = s.nextLine().toLowerCase();
+		}
+		while(s.hasNextLine() && !r.split(":")[0].equals("audiofilename")) {
+			r = s.nextLine().toLowerCase();
+		}
+		String out = r.split(":")[1];
+		if(out.substring(0,1).equals(" ")) {
+			out = out.substring(1);
+		}
+		return folder + out;
+	}
 }

@@ -33,7 +33,7 @@ public class Main extends JPanel{
 		
 		JFrame j = new JFrame();
 		j.setTitle("hehe");
-		j.setSize(new Dimension(1000,1000));
+		j.setSize(new Dimension(500,1000));
 		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		j.addKeyListener(new KeyListener() {
@@ -55,10 +55,12 @@ public class Main extends JPanel{
 		noteList.setTarget(catcher.getBindingBox());
 		noteList.attachScoreCounter(scorecounter);
 		noteList.setWindowSize(j.getWidth(), j.getHeight());
-		OsuParser.parse("Kurokotei - Wtf/Kurokotei - wtf (FAMoss) [insane].osu", noteList);
+		String folderPath = "C:/Users/minno/AppData/Local/osu!/Songs/1621762 linear ring - Can you hear me/";
+		String mapPath = "linear ring - Can you hear me (Ulis-) [Yeah (Insane)].osu";
+		OsuParser.parse(folderPath + mapPath, noteList);
 		JFXPanel fxPanel = new JFXPanel();
 		j.add(fxPanel);
-		Media media = new Media(new File("Kurokotei - Wtf/wtf.mp3").toURI().toString());
+		Media media = new Media(new File(OsuParser.getPathToAudio(folderPath,mapPath)).toURI().toString());
 		MediaPlayer mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.setVolume(0.02);
 		//System.out.println(noteList);
