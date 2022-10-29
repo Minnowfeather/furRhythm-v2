@@ -3,8 +3,8 @@ package furRhythm_recoded;
 import java.awt.geom.Rectangle2D;
 
 public class NoteCatcher {
-	private final Rectangle2D.Double R;
-	private final char LETTER;
+	private Rectangle2D.Double R;
+	private char LETTER;
 	private boolean pressed;
 	public NoteCatcher(Rectangle2D.Double r, char l) {
 		this.R = r;
@@ -25,6 +25,10 @@ public class NoteCatcher {
 	}
 	public Rectangle2D.Double getRect(){
 		return R;
+	}
+	
+	public void destroy() {
+		R = null;
 	}
 	
 }

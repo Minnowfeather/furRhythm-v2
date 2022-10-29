@@ -21,8 +21,10 @@ public class Main extends JPanel{
 	static FurInputHandler k;
 	static ScoreCounter scorecounter;
 	static Font scoreFont, comboFont;
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	static Rectangle2D.Double blocc;
+	static boolean quit;
+	public static void main(String[] args) {		
+		quit = false;
 		
 		k = new FurInputHandler(4);
 		scorecounter = new ScoreCounter();
@@ -33,7 +35,7 @@ public class Main extends JPanel{
 		
 		JFrame j = new JFrame();
 		j.setTitle("hehe");
-		j.setSize(new Dimension(500,1000));
+		j.setSize(new Dimension(400,900));
 		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		j.addKeyListener(new KeyListener() {
@@ -43,7 +45,11 @@ public class Main extends JPanel{
 			public void keyReleased(KeyEvent e) {
 				k.release(e.getKeyChar());
 			}
-			public void keyTyped(KeyEvent e) {}
+			public void keyTyped(KeyEvent e) {
+				if(e.getKeyChar() == 'q') {
+					quit = true;
+				}
+			}
 		});
 		j.add(new Main());
 		j.setVisible(true);
@@ -55,8 +61,16 @@ public class Main extends JPanel{
 		noteList.setTarget(catcher.getBindingBox());
 		noteList.attachScoreCounter(scorecounter);
 		noteList.setWindowSize(j.getWidth(), j.getHeight());
-		String folderPath = "C:/Users/minno/AppData/Local/osu!/Songs/1621762 linear ring - Can you hear me/";
-		String mapPath = "linear ring - Can you hear me (Ulis-) [Yeah (Insane)].osu";
+		
+		blocc = new Rectangle2D.Double(
+				0, 
+				catcher.getBindingBox().getY()+catcher.getBindingBox().getHeight(), 
+				j.getWidth(), 
+				j.getHeight() - catcher.getBindingBox().getMaxY()
+				);
+		
+		String folderPath = "C:\\Users\\minno\\AppData\\Local\\osu!\\Songs\\618645 orangentle _ Yu_Asahina - HAELEQUINZ -the clown of 24stairs-\\";
+		String mapPath = "orangentle  Yu_Asahina - HAELEQUINZ -the clown of 24stairs- (xLolicore-) [Ultima Fox's 4K DYSLEXiA].osu";
 		OsuParser.parse(folderPath + mapPath, noteList);
 		JFXPanel fxPanel = new JFXPanel();
 		j.add(fxPanel);
@@ -84,7 +98,7 @@ public class Main extends JPanel{
 		long timeStamp_before = System.nanoTime();
 		long timeStamp_after = timeStamp_before;
 		double dT = 0;
-		while(timeElapsed < noteList.getLatest() + 1000) {
+		while(timeElapsed < noteList.getLatest() + 1000 && !quit) {
 			if(timeElapsed == 0) {
 				mediaPlayer.play();
 			}
@@ -108,6 +122,23 @@ public class Main extends JPanel{
 			timeElapsed = System.currentTimeMillis() - startTime + startOffset;
 		} // end update loop
 		j.repaint();
+		
+		mediaPlayer.stop();
+		
+		
+		noteList.destroy();
+		catcher.destroy();
+		k.destroy();
+		
+		noteList = null;
+		catcher = null;
+		k = null;
+		scoreFont = null;
+		comboFont = null;
+		blocc = null;
+		media = null;
+		mediaPlayer = null;
+		j.dispose();
 		System.out.println("done");
 	}
 	
@@ -121,7 +152,9 @@ public class Main extends JPanel{
 			g2.draw(i);
 		}
 		*/
-		g2.draw(catcher.getBindingBox());
+		if(catcher != null) {
+			g2.draw(catcher.getBindingBox());
+		}
 		// draw notes
 		g2.setColor(new Color(0,255,0));
 		for(Note i:noteList.getVisibleNotes()) {
@@ -143,6 +176,8 @@ public class Main extends JPanel{
 		g2.drawString(""+(int)scorecounter.getScore(), 0, 40);
 		g2.setFont(comboFont);
 		g2.drawString(""+(int)scorecounter.getCombo(), 500, 500);
+		g2.setColor(new Color(0,0,0));
+		g2.fill(blocc);
 	}
 	
 	

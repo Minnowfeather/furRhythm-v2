@@ -33,20 +33,16 @@ public class TapNote extends Note{
 	
 	public int computeInput(double currentTiming) {
 		double distance = Math.abs(endTime - currentTiming);
-		if(distance < 50) {
+		if(distance < 40) {
 			return 3;
 		}
-		if(distance < 100) {
+		if(distance < 60) {
 			return 2;
 		}
-		if(distance < 150) {
+		/*if(distance < 90) {
 			return 1;
-		}
+		}*/
 		return 0;
-	}
-	
-	public Rectangle2D.Double getRect() {
-		return rect;
 	}
 	
 	@Override

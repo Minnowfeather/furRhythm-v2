@@ -155,6 +155,7 @@ public class NoteController {
 		
 		return out;
 	}
+	
 	public String toString() {
 		StringBuilder out = new StringBuilder();
 		for(Note n:noteList) {
@@ -165,10 +166,12 @@ public class NoteController {
 	public void destroy() {
 		while(!noteList.isEmpty()) {
 			Note n = noteList.remove(0);
+			n.destroy();
 			n = null;
 		}
 		while(!removeList.isEmpty()) {
 			Note n = removeList.remove(0);
+			n.destroy();
 			n = null;
 		}
 		noteList = null;

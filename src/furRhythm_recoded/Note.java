@@ -8,7 +8,7 @@ public abstract class Note implements Comparable<Note>{
 	public static double WIDTH = 100;
 	public static double HEIGHT = 20;
 	public static int HITVALUE = 100;
-	public double SPEED = 6.3;
+	public double SPEED = 6;
 	public double SCONST = 100;
 	
 	// stuff for lower classes
@@ -69,7 +69,9 @@ public abstract class Note implements Comparable<Note>{
 	public double getEndTime() {
 		return endTime;
 	}
-	abstract Rectangle2D.Double getRect();
+	public Rectangle2D.Double getRect(){
+		return rect;
+	}
 	
 	// setters
 	public void setMoving(boolean m) {

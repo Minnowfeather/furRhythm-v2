@@ -72,4 +72,11 @@ public class FurInputHandler {
 		return tempKeys;
 	}
 	
+	public void destroy() {
+		keys.clear();
+		lockList.clear();
+		keys = null;
+		lockList = null;
+	}
+	
 }

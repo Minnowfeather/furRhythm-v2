@@ -7,7 +7,7 @@ public class NoteCatcherController {
 	private NoteCatcher[] catchers;
 	public int WINDOW_WIDTH = 1000;
 	public int WINDOW_HEIGHT = 1000;
-	final Rectangle2D.Double BINDING_BOX;
+	private Rectangle2D.Double BINDING_BOX;
 	
 	public NoteCatcherController(FurInputHandler inputhandler) {
 		BINDING_BOX = new Rectangle2D.Double(0, 600, 1000, 10);
@@ -88,5 +88,14 @@ public class NoteCatcherController {
 		WINDOW_HEIGHT = height;
 		BINDING_BOX.setRect(0, 3*height/4, width, 10);
 		createCatchers();
+	}
+	
+	public void destroy() {
+		inputhandler = null;
+		for(int i = 0; i < catchers.length; i++) {
+			catchers[i].destroy();
+			catchers[i] = null;
+		}
+		BINDING_BOX = null;
 	}
 }
