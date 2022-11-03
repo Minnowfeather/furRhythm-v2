@@ -1,5 +1,7 @@
 bin/*
 deps/*
+testMaps/*
+!testMaps/myMap.txt
 *.dll
 *.lib
 Kurokotei - Wtf/*
