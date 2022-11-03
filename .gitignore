@@ -1,6 +1,5 @@
 bin/*
 deps/*
-*.class
 *.dll
 *.lib
 Kurokotei - Wtf/*

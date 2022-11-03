@@ -52,6 +52,7 @@ public class Main extends JPanel{
 			}
 		});
 		j.add(new Main());
+		j.setBackground(new Color(0,0,0));
 		j.setVisible(true);
 		
 		
@@ -69,8 +70,8 @@ public class Main extends JPanel{
 				j.getHeight() - catcher.getBindingBox().getMaxY()
 				);
 		
-		String folderPath = "C:\\Users\\minno\\AppData\\Local\\osu!\\Songs\\618645 orangentle _ Yu_Asahina - HAELEQUINZ -the clown of 24stairs-\\";
-		String mapPath = "orangentle  Yu_Asahina - HAELEQUINZ -the clown of 24stairs- (xLolicore-) [Ultima Fox's 4K DYSLEXiA].osu";
+		String folderPath = "C:\\Users\\minno\\AppData\\Local\\osu!\\Songs\\1808776 Sta - BLRINK\\";
+		String mapPath = "Sta - BLRINK (gogozzzx) [another].osu";
 		OsuParser.parse(folderPath + mapPath, noteList);
 		JFXPanel fxPanel = new JFXPanel();
 		j.add(fxPanel);
@@ -98,7 +99,7 @@ public class Main extends JPanel{
 		long timeStamp_before = System.nanoTime();
 		long timeStamp_after = timeStamp_before;
 		double dT = 0;
-		while(timeElapsed < noteList.getLatest() + 1000 && !quit) {
+		while(timeElapsed < noteList.getLatest() + 5000 && !quit) {
 			if(timeElapsed == 0) {
 				mediaPlayer.play();
 			}
@@ -145,7 +146,7 @@ public class Main extends JPanel{
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 		
-		g2.setColor(new Color(0,0,0));
+		g2.setColor(new Color(255,255,255));
 		
 		/* outline deactivated noteCatchers
 		for(Rectangle2D.Double i:catcher.getDraw()) {
@@ -156,17 +157,23 @@ public class Main extends JPanel{
 			g2.draw(catcher.getBindingBox());
 		}
 		// draw notes
-		g2.setColor(new Color(0,255,0));
+		g2.setColor(new Color(194, 61, 83));
 		for(Note i:noteList.getVisibleNotes()) {
 			if(i == null)
 				continue;
 			try {
+				if(i.getLane() == 'f' || i.getLane() == 'j') 
+					g2.setColor(new Color(194, 61, 83));
+				else
+					g2.setColor(new Color(194, 61, 130));
 				g2.fill(i.getRect());
 			} catch(NullPointerException e) {
 				System.out.println("Bad!");
 			}
 			
 		}
+		
+
 		// fill the activated catchers
 		g2.setColor(new Color(255,0,0));
 		for(Rectangle2D.Double i:catcher.getFill()) {
@@ -176,7 +183,7 @@ public class Main extends JPanel{
 		g2.drawString(""+(int)scorecounter.getScore(), 0, 40);
 		g2.setFont(comboFont);
 		g2.drawString(""+(int)scorecounter.getCombo(), 500, 500);
-		g2.setColor(new Color(0,0,0));
+		g2.setColor(new Color(50,50,50));
 		g2.fill(blocc);
 	}
 	

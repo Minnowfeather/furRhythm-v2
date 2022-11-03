@@ -31,6 +31,13 @@ public class TapNote extends Note{
 		rect = new Rectangle2D.Double(this.x, this.y, WIDTH, HEIGHT);
 	}
 	
+	public void setTarget(Rectangle2D.Double s, double releaseTime) {
+		setTarget(s);
+	}
+	
+	public double getReleaseTime() {
+		return getEndTime();
+	}
 	public int computeInput(double currentTiming) {
 		double distance = Math.abs(endTime - currentTiming);
 		if(distance < 40) {

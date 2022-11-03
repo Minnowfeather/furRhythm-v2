@@ -42,21 +42,40 @@ public class NoteController {
 		addNote(n, this.target);
 	}
 	public void addNote(Note n, Rectangle2D.Double t) {
+		n.setTarget(t);
 		noteList.add(n);
-		noteList.get(noteList.size()-1).setTarget(t);
 		earliestStart = Math.min(n.getStartTime(), earliestStart);
 		latestEnd = Math.max(n.getEndTime(), latestEnd);
 	}
+	
+	public void addNote(Note n, Rectangle2D.Double t, double releaseTime) {
+		earliestStart = Math.min(n.getStartTime(), earliestStart);
+		latestEnd = Math.max(n.getReleaseTime(), latestEnd);
+		n.setTarget(t,releaseTime);
+		noteList.add(n);
+	}
+	public void addNote(Note n, double releaseTime) {
+		addNote(n, this.target, releaseTime);
+	}
+	
 	public void createTapNote(char lane, double timing) {
 		addNote(new TapNote(lane, timing));
 	}
 	public void createTapNote(int lane, double timing) {
 		addNote(new TapNote(lane, timing));
 	}
-
 	public void createTapNote(char lane, double timing, Rectangle2D.Double t) {
 		addNote(new TapNote(lane, timing), t);
 	}
+	
+	
+	public void createHoldNote(char lane, double timing, double releaseTime) {
+		addNote(new HoldNote(lane, timing), releaseTime);
+	}
+	public void createHoldNote(int lane, double timing, double releaseTime) {
+		addNote(new HoldNote(lane, timing), releaseTime);
+	}
+	
 	public void setTarget(Rectangle2D.Double t) {
 		setTarget(t, false);
 	}
@@ -98,7 +117,7 @@ public class NoteController {
 		for(Note n:noteList) {
 			if(n.getStartTime() > time)
 				continue;
-			if(n.getEndTime() + 150 < time) {
+			if(n.getEndTime() + 150 < time && n instanceof TapNote) {
 				sC.addScore(1);
 				removeList.add(n);
 			}

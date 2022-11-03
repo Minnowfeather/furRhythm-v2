@@ -1,6 +1,7 @@
 package furRhythm_recoded;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Double;
 
 public abstract class Note implements Comparable<Note>{
 	
@@ -31,12 +32,12 @@ public abstract class Note implements Comparable<Note>{
 	public void move(double x, double y) {
 		this.x += x;
 		this.y += y;
-		rect.setRect(this.x, this.y, WIDTH, HEIGHT);
+		rect.setRect(this.x, this.y, rect.getWidth(), rect.getHeight());
 	}
 	public void moveTo(double x, double y) {
 		this.x = x;
 		this.y = y;
-		rect.setRect(this.x, this.y, WIDTH, HEIGHT);
+		rect.setRect(this.x, this.y, rect.getWidth(), rect.getHeight());
 	}
 	
 	
@@ -69,6 +70,7 @@ public abstract class Note implements Comparable<Note>{
 	public double getEndTime() {
 		return endTime;
 	}
+	public abstract double getReleaseTime();
 	public Rectangle2D.Double getRect(){
 		return rect;
 	}
@@ -81,7 +83,7 @@ public abstract class Note implements Comparable<Note>{
 		dist = Math.abs(s.getCenterY() - getCenterY());
 		spd = dist/(endTime - startTime);
 	}
-	
+	public abstract void setTarget(Rectangle2D.Double s, double releaseTime);
 	// char to lane
 	protected int laneCharToInt(char lane) {
 		switch(lane) {
@@ -142,4 +144,5 @@ public abstract class Note implements Comparable<Note>{
 		rect = null;
 		MOVING = false;
 	}
+	
 }

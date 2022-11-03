@@ -22,9 +22,17 @@ public class OsuParser {
 		while(scan.hasNextLine()) {
 			read = scan.nextLine();
 			stringData = read.split(",");
-			//hold = stringData[5];
-			noteList.createTapNote((int)Math.floor(Double.parseDouble(stringData[0]) * noteList.getLaneCount() / 512.0),
-					Double.parseDouble(stringData[2]));
+			double hold = Double.parseDouble(stringData[5].split(":")[0]);
+			if(hold == 0) {
+				noteList.createTapNote(
+						(int)Math.floor(Double.parseDouble(stringData[0]) * noteList.getLaneCount() / 512.0),
+						Double.parseDouble(stringData[2]));
+			} else {
+				noteList.createHoldNote(
+						(int)Math.floor(Double.parseDouble(stringData[0]) * noteList.getLaneCount() / 512.0),
+						Double.parseDouble(stringData[2]),
+						hold);
+			}
 			
 		}
 		
