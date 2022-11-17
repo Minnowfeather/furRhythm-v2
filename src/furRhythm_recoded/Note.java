@@ -9,8 +9,11 @@ public abstract class Note implements Comparable<Note>{
 	public static double WIDTH = 100;
 	public static double HEIGHT = 20;
 	public static int HITVALUE = 100;
-	public double SPEED = 6;
-	public double SCONST = 100;
+	public final double SPEED = 6;
+	public final double SCONST = 100;
+	public static final double GREAT = 40;
+	public static final double GOOD = 60;
+	public static final double MISS = 100;
 	
 	// stuff for lower classes
 	protected double x,y;
@@ -125,7 +128,25 @@ public abstract class Note implements Comparable<Note>{
 		return '|';
 	}
 	
-	abstract int computeInput(double currentTiming);
+	public int computeInput(double currentTiming) {
+		/*
+		 * 0 = not within timing
+		 * 1 = miss
+		 * 2 = good
+		 * 3 = perfect
+		 */
+		double distance = Math.abs(getEndTime() - currentTiming);
+		if(distance < GREAT) {
+			return 3;
+		}
+		if(distance < GOOD) {
+			return 2;
+		}
+		/*if(distance < 90) {
+			return 1;
+		}*/
+		return 0;
+	}
 	
 	public String toString() {
 		return "";
@@ -144,5 +165,10 @@ public abstract class Note implements Comparable<Note>{
 		rect = null;
 		MOVING = false;
 	}
+	protected abstract void lock();
+	protected abstract void unlock();
+	protected abstract boolean isLocked();
+	protected abstract void setTracked(boolean b);
+	protected abstract boolean isTracked();
 	
 }

@@ -1,12 +1,12 @@
 package furRhythm_recoded;
 public class ScoreCounter {
 	private double totalScore;
-	private int combo;
+	private double combo;
 
 	public ScoreCounter() {
 		this(0, 0);
 	}
-	public ScoreCounter(double score, int combo) {
+	public ScoreCounter(double score, double combo) {
 		totalScore = score;
 		this.combo = combo;
 	}
@@ -29,11 +29,20 @@ public class ScoreCounter {
 				break;
 		}
 	}
+	public void addScoreRaw(double i, double c) {
+		totalScore += i;
+		combo += c;
+	}
 	
 	public double getScore() {
-		return totalScore;
+		return (int)totalScore;
 	}
 	public int getCombo() {
-		return combo;
+		return (int)combo;
+	}
+	
+	public void round() {
+		totalScore = Math.round(totalScore);
+		combo = Math.round(combo);
 	}
 }

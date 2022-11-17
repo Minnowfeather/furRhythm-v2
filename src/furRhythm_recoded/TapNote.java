@@ -35,26 +35,30 @@ public class TapNote extends Note{
 		setTarget(s);
 	}
 	
-	public double getReleaseTime() {
-		return getEndTime();
-	}
-	public int computeInput(double currentTiming) {
-		double distance = Math.abs(endTime - currentTiming);
-		if(distance < 40) {
-			return 3;
-		}
-		if(distance < 60) {
-			return 2;
-		}
-		/*if(distance < 90) {
-			return 1;
-		}*/
-		return 0;
-	}
-	
 	@Override
 	public String toString() {
 		return "{" + LANE + "," + endTime + "," + MOVING + "}";
+	}
+	
+	// Dummy methods to make the abstract class happy
+	
+	@Override
+	public double getReleaseTime() {
+		return getEndTime();
+	}
+	@Override
+	protected void lock() {}
+	@Override
+	protected void unlock() {}
+	@Override
+	protected boolean isLocked() {
+		return false;
+	}
+	@Override
+	protected void setTracked(boolean b) {}
+	@Override
+	protected boolean isTracked() {
+		return false;
 	}
 	
 }

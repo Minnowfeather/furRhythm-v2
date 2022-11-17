@@ -2,6 +2,7 @@ package furRhythm_recoded;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class Main extends JPanel{
 	static Font scoreFont, comboFont;
 	static Rectangle2D.Double blocc;
 	static boolean quit;
+	static final boolean hidden = false;
 	public static void main(String[] args) {		
 		quit = false;
 		
@@ -70,8 +72,8 @@ public class Main extends JPanel{
 				j.getHeight() - catcher.getBindingBox().getMaxY()
 				);
 		
-		String folderPath = "C:\\Users\\minno\\AppData\\Local\\osu!\\Songs\\1808776 Sta - BLRINK\\";
-		String mapPath = "Sta - BLRINK (gogozzzx) [another].osu";
+		String folderPath = "C:\\Users\\minno\\AppData\\Local\\osu!\\Songs\\Knapsack+-+difficulties+of+getting+out+of+bed\\";
+		String mapPath = "Knapsack - difficulties of getting out of bed (Parachor) [brief nap [short ver.]].osu";
 		OsuParser.parse(folderPath + mapPath, noteList);
 		JFXPanel fxPanel = new JFXPanel();
 		j.add(fxPanel);
@@ -157,15 +159,22 @@ public class Main extends JPanel{
 			g2.draw(catcher.getBindingBox());
 		}
 		// draw notes
-		g2.setColor(new Color(194, 61, 83));
 		for(Note i:noteList.getVisibleNotes()) {
 			if(i == null)
 				continue;
 			try {
-				if(i.getLane() == 'f' || i.getLane() == 'j') 
+				if(i.getLane() == 'f' || i.getLane() == 'j') {
 					g2.setColor(new Color(194, 61, 83));
-				else
+					if(i.isLocked()) {
+						g2.setColor(new Color(116, 37, 50));
+					}
+				}
+				else {
 					g2.setColor(new Color(194, 61, 130));
+					if(i.isLocked()) {
+						g2.setColor(new Color(143, 44, 95));
+					}
+				}
 				g2.fill(i.getRect());
 			} catch(NullPointerException e) {
 				System.out.println("Bad!");
@@ -173,7 +182,17 @@ public class Main extends JPanel{
 			
 		}
 		
-
+		if(hidden) {
+			GradientPaint gradient = new GradientPaint(
+					0, 
+					(int)catcher.getBindingBox().getY(), 
+					new Color(0xFF000000, true), 
+					0,
+					(int)catcher.getBindingBox().getY()-500,
+					new Color(0x00FFFFFF, true));
+			g2.setPaint(gradient);
+			g2.fill(new Area(new Rectangle2D.Double(0,catcher.getBindingBox().getY()-500,400,500)));
+		}
 		// fill the activated catchers
 		g2.setColor(new Color(255,0,0));
 		for(Rectangle2D.Double i:catcher.getFill()) {
