@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.event.*;
 
 import java.io.File;
+import java.util.Scanner;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
@@ -72,12 +73,14 @@ public class Main extends JPanel{
 				j.getHeight() - catcher.getBindingBox().getMaxY()
 				);
 		
-		String folderPath = "C:\\Users\\minno\\AppData\\Local\\osu!\\Songs\\1479680 Camellia feat Nanahira - Versus! (Cut Ver)\\";
-		String mapPath = "Camellia feat. Nanahira - Versus! (Cut Ver.) (Rhezie) [Rip's Hard!].osu";
-		OsuParser osuparse = new OsuParser(folderPath, mapPath);
-		for(String i:osuparse.getDifficulties()) {
-			System.out.println(i);
+		String folderPath = "C:\\Users\\minno\\AppData\\Local\\osu!\\Songs\\530756 Kuroneko Dungeon - Lilieze to Enryuu Laevateinn\\";
+		OsuParser osuparse = new OsuParser(folderPath);
+		String[] possibleDiffs = osuparse.getDifficulties();
+		for(int i = 0; i < possibleDiffs.length; i++) {
+			System.out.println((i+1) + ": " + possibleDiffs[i]);
 		}
+		Scanner scanner = new Scanner(System.in);
+		osuparse.setDifficulty(possibleDiffs[scanner.nextInt()-1]);
 		osuparse.parse(noteList);
 		JFXPanel fxPanel = new JFXPanel();
 		j.add(fxPanel);
@@ -205,7 +208,7 @@ public class Main extends JPanel{
 		g2.setFont(scoreFont);
 		g2.drawString(""+(int)scorecounter.getScore(), 0, 40);
 		g2.setFont(comboFont);
-		g2.drawString(""+(int)scorecounter.getCombo(), 500, 500);
+		g2.drawString(""+(int)scorecounter.getCombo(), 100, 500);
 		g2.setColor(new Color(50,50,50));
 		g2.fill(blocc);
 	}

@@ -11,9 +11,9 @@ public abstract class Note implements Comparable<Note>{
 	public static int HITVALUE = 100;
 	public final double SPEED = 6;
 	public final double SCONST = 100;
-	public static final double GREAT = 40;
-	public static final double GOOD = 60;
-	public static final double MISS = 100;
+	public static final double GREAT = 60;
+	public static final double GOOD = 120;
+	public static final double MISS = 130;
 	
 	// stuff for lower classes
 	protected double x,y;

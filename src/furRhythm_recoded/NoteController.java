@@ -51,6 +51,7 @@ public class NoteController {
 		noteList.add(n);
 		earliestStart = Math.min(n.getStartTime(), earliestStart);
 		latestEnd = Math.max(n.getEndTime(), latestEnd);
+		updateNoteValue();
 	}
 	
 	public void addNote(Note n, Rectangle2D.Double t, double releaseTime) {
@@ -58,6 +59,7 @@ public class NoteController {
 		latestEnd = Math.max(n.getReleaseTime(), latestEnd);
 		n.setTarget(t,releaseTime);
 		noteList.add(n);
+		updateNoteValue();
 	}
 	public void addNote(Note n, double releaseTime) {
 		addNote(n, this.target, releaseTime);
@@ -271,5 +273,11 @@ public class NoteController {
 		target = null;
 		iH = null;
 		sC = null;
+	}
+	
+	private void updateNoteValue() {
+		for(Note i:noteList) {
+			i.HITVALUE = 1000000/noteList.size();
+		}
 	}
 }
