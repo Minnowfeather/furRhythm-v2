@@ -2,9 +2,37 @@ package furRhythm_recoded;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.LinkedList;
 
-public class OsuParser {
-	static void parse(String filename, NoteController noteList) {
+public class OsuParser{
+	private String path;
+	private String diff;
+	private int numObjects;
+	public OsuParser() {
+		this("");
+	}
+	public OsuParser(String path) {
+		this(path, "");
+	}
+	public OsuParser(String path, String diff) {
+		this.path = path;
+		this.diff = diff;
+		numObjects = 0;
+	}
+	
+	public void setDirectory(String path) {
+		this.path = path;
+	}
+	
+	public void setDifficulty(String diff) {
+		this.diff = diff;
+	}
+	
+	void parse(NoteController noteList) {
+		parse(path + diff, noteList);
+	}
+	
+	void parse(String filename, NoteController noteList) {
 		Scanner scan = null;
 		try {
 			scan = new Scanner(new File(filename), "UTF-8");
@@ -33,13 +61,16 @@ public class OsuParser {
 						Double.parseDouble(stringData[2]),
 						hold);
 			}
-			
+			numObjects++;
 		}
 		
 		// https://osu.ppy.sh/wiki/en/Client/File_formats/Osu_%28file_format%29#holds-(osu!mania-only)
 	}
+	String getPathToAudio() {
+		return getPathToAudio(this.path, this.diff);
+	}
 	
-	static String getPathToAudio(String folder, String map) {
+	String getPathToAudio(String folder, String map) {
 		Scanner s = null;
 		try {
 			s = new Scanner(new File(folder + map), "UTF-8");
@@ -58,5 +89,22 @@ public class OsuParser {
 			out = out.substring(1);
 		}
 		return folder + out;
+	}
+	String[] getDifficulties() {
+		return getDifficulties(this.path);
+	}
+	String[] getDifficulties(String p) {
+		LinkedList<String> s = new LinkedList<>();
+		File[] dir = new File(p).listFiles();
+		for(File i:dir) {
+			if(i.isFile() && i.getName().endsWith(".osu")) {
+				s.add(i.getName());
+			}
+		}
+		String[] output = new String[s.size()];
+		for(int i = 0; i < output.length; i++) {
+			output[i] = s.remove();
+		}
+		return output;
 	}
 }

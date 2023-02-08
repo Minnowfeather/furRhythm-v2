@@ -72,12 +72,16 @@ public class Main extends JPanel{
 				j.getHeight() - catcher.getBindingBox().getMaxY()
 				);
 		
-		String folderPath = "C:\\Users\\minno\\AppData\\Local\\osu!\\Songs\\Knapsack+-+difficulties+of+getting+out+of+bed\\";
-		String mapPath = "Knapsack - difficulties of getting out of bed (Parachor) [brief nap [short ver.]].osu";
-		OsuParser.parse(folderPath + mapPath, noteList);
+		String folderPath = "C:\\Users\\minno\\AppData\\Local\\osu!\\Songs\\1479680 Camellia feat Nanahira - Versus! (Cut Ver)\\";
+		String mapPath = "Camellia feat. Nanahira - Versus! (Cut Ver.) (Rhezie) [Rip's Hard!].osu";
+		OsuParser osuparse = new OsuParser(folderPath, mapPath);
+		for(String i:osuparse.getDifficulties()) {
+			System.out.println(i);
+		}
+		osuparse.parse(noteList);
 		JFXPanel fxPanel = new JFXPanel();
 		j.add(fxPanel);
-		Media media = new Media(new File(OsuParser.getPathToAudio(folderPath,mapPath)).toURI().toString());
+		Media media = new Media(new File(osuparse.getPathToAudio()).toURI().toString());
 		MediaPlayer mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.setVolume(0.02);
 		//System.out.println(noteList);

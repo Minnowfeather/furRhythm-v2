@@ -182,12 +182,14 @@ public class NoteController {
 			// HOLDNOTES: this is way too complicated to summarize im so sorry
 			if(n instanceof HoldNote) {
 				// lock the key if its pressed and not already locked
+				boolean removeN = false;
 				if(iH.getValue(n.getLane())) {
 					iH.lock(n.getLane());
 				}
 				if(!n.isLocked()) {
 					// determine whether to yeet the note or not
-					boolean removeN = computeInput(n, time);
+					removeN = computeInput(n, time);
+					
 					// if the player lets go, lock the note and break combo
 					if(!iH.getValue(n.getLane()) && n.isTracked() && n.getEndTime() + Note.MISS < time) {
 						n.lock();
