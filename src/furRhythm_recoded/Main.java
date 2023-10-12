@@ -39,6 +39,7 @@ public class Main extends JPanel{
 		JFrame j = new JFrame();
 		j.setTitle("hehe");
 		j.setSize(new Dimension(400,900));
+		j.setPreferredSize(new Dimension(400,900));
 		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		j.addKeyListener(new KeyListener() {
@@ -56,6 +57,8 @@ public class Main extends JPanel{
 		});
 		j.add(new Main());
 		j.setBackground(new Color(0,0,0));
+		j.setResizable(false);
+		//j.pack();
 		j.setVisible(true);
 		
 		
@@ -73,7 +76,8 @@ public class Main extends JPanel{
 				j.getHeight() - catcher.getBindingBox().getMaxY()
 				);
 		
-		String folderPath = "C:\\Users\\minno\\AppData\\Local\\osu!\\Songs\\530756 Kuroneko Dungeon - Lilieze to Enryuu Laevateinn\\";
+		//String folderPath = "C:\\Users\\minno\\AppData\\Local\\osu!\\Songs\\530756 Kuroneko Dungeon - Lilieze to Enryuu Laevateinn\\";
+		String folderPath = "/home/furry/Desktop/Files/Code/furRhythm-v2/testMaps/CaitSith/";
 		OsuParser osuparse = new OsuParser(folderPath);
 		String[] possibleDiffs = osuparse.getDifficulties();
 		for(int i = 0; i < possibleDiffs.length; i++) {
