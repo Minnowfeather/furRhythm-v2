@@ -2,16 +2,18 @@ package furRhythm_recoded;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-
+import java.util.PriorityQueue;
 import javax.swing.ActionMap;
 
 public class NoteController {
-	private ArrayList<Note> noteList;
+	private PriorityQueue<Note> noteList;
+	private LinkedList<Note> visibleNotes;
 	private ArrayList<Note> activeHolds;
 	private Rectangle2D.Double target;
 	private FurInputHandler iH;
 	private ScoreCounter sC;
-	private ArrayList<Note> removeList;
+	//private ArrayList<Note> removeList;
+	private LinkedList<Note> removeList;
 	private double earliestStart;
 	private double latestEnd;
 	private int amtOfLanes;
@@ -24,18 +26,20 @@ public class NoteController {
 		this.amtOfLanes = amtOfLanes;
 		this.iH = iH;
 		Note.WIDTH = (WINDOW_WIDTH / amtOfLanes);
-		noteList = new ArrayList<Note>();
-		removeList = new ArrayList<Note>();
+		noteList = new PriorityQueue<Note>();
+		removeList = new LinkedList<Note>();
 		activeHolds = new ArrayList<Note>();
+		visibleNotes = new LinkedList<Note>();
 	}
 	public NoteController(Rectangle2D.Double target, int amtOfLanes) {
 		this.lastKnownTime = 0;
 		this.amtOfLanes = amtOfLanes;
 		Note.WIDTH = (WINDOW_WIDTH / amtOfLanes);
-		noteList = new ArrayList<Note>();
 		this.target = target;
-		removeList = new ArrayList<Note>();
+		noteList = new PriorityQueue<Note>();
+		removeList = new LinkedList<Note>();
 		activeHolds = new ArrayList<Note>();
+		visibleNotes = new LinkedList<Note>();
 	}
 	public void attachScoreCounter(ScoreCounter c) {
 		this.sC = c;
@@ -143,21 +147,21 @@ public class NoteController {
 			}
 			sC.addScoreRaw(0.005,0.005);
 		}
-		for(Note n:noteList) {
+		for(Note n:visibleNotes) { //TODO: pull notes from notelist and put into activenotes. pull from activenotes and put into removelist. iterate over activenotes onl
 			// skip notes that aren't onscreen
 			if(n.getStartTime() > time)
 				continue;
 			// timeout TapNote
 			if(n.getEndTime() + Note.MISS < time && n instanceof TapNote) {
 				sC.addScore(1);
-				removeList.add(n);
+				removeList.push(n);
 			}
 			// timeout HoldNotes that have been released
 			if(n instanceof HoldNote && time >= n.getReleaseTime() && n.isLocked()) {
 				// break combo
 				sC.addScore(1);
 				// KILL
-				removeList.add(n);
+				removeList.push(n);
 				// remove it from activeholds if possible
 				if(n.isTracked()) {
 					activeHolds.remove(n);
@@ -175,7 +179,7 @@ public class NoteController {
 				if(iH.getValue(n.getLane()) && !iH.getLock(n.getLane())) {
 					boolean removeN = computeInput(n, time);
 					if(removeN) {
-						removeList.add(n);
+						removeList.push(n);
 					}
 					iH.lock(n.getLane());
 				}
@@ -202,7 +206,7 @@ public class NoteController {
 						sC.round();
 						activeHolds.remove(n);
 						n.setTracked(false);
-						removeList.add(n);
+						removeList.push(n);
 					}
 				}
 			}
@@ -210,11 +214,11 @@ public class NoteController {
 		
 		// remove notes that should be removed
 		while(!removeList.isEmpty()) {
-			Note n = removeList.remove(0);
+			Note n = removeList.pop();
 			noteList.remove(n);
 			n.destroy();
 			n = null;			
-		}		
+		}
 	}
 
 	public ArrayList<Note> getList(){
@@ -231,23 +235,14 @@ public class NoteController {
 	public int getLaneCount() {
 		return amtOfLanes;
 	}
-	public Note[] getVisibleNotes() {
-		ArrayList<Note> n = new ArrayList<>();
-		int index = 0;
-		while(index < noteList.size() && noteList.get(index).getStartTime() <= lastKnownTime) {
-			if(noteList.get(index) == null) {
-				index++;
-				continue;
-			}
-			n.add(noteList.get(index));
-			index++;
+	public LinkedList<Note> getVisibleNotes() {
+		return visibleNotes;
+	}
+
+	private void updateVisibleNotes(double currentTime){
+		while(!noteList.isEmpty() && noteList.peek().getStartTime() > currentTime){
+			visibleNotes.add(noteList.dequeue());
 		}
-		Note[] out = new Note[n.size()];
-		for(int i = 0; i < out.length; i++) {
-			out[i] = n.remove(0);
-		}
-		
-		return out;
 	}
 	
 	public String toString() {

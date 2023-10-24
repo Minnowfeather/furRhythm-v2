@@ -77,7 +77,11 @@ public class Main extends JPanel{
 				);
 		
 		//String folderPath = "C:\\Users\\minno\\AppData\\Local\\osu!\\Songs\\530756 Kuroneko Dungeon - Lilieze to Enryuu Laevateinn\\";
-		String folderPath = "/home/furry/Desktop/Files/Code/furRhythm-v2/testMaps/CaitSith/";
+		//String folderPath = "/home/furry/Desktop/Files/Code/furRhythm-v2/testMaps/CaitSith/";
+		//String folderPath = "/home/furry/Desktop/Files/Code/furRhythm-v2/testMaps/Pallet/";
+		String folderPath = "/home/furry/Desktop/Files/Code/furRhythm-v2/testMaps/Distance/";
+
+
 		OsuParser osuparse = new OsuParser(folderPath);
 		String[] possibleDiffs = osuparse.getDifficulties();
 		for(int i = 0; i < possibleDiffs.length; i++) {
